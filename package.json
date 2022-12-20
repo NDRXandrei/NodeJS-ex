@@ -1,0 +1,23 @@
+{
+  "name": "nodejs-ex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NDRXandrei/NodeJS-ex.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NDRXandrei/NodeJS-ex/issues"
+  },
+  "homepage": "https://github.com/NDRXandrei/NodeJS-ex#readme",
+  "devDependencies": {
+    "jest": "^29.3.1"
+  }
+}
