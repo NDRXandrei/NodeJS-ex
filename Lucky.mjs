@@ -12,15 +12,39 @@ function luckyDraw(player) {
   });
 }
 
+import * as fs from "node:fs";
+
+async function dir() {
+  luckyDraw().then(
+    fs.mkdir(`C:/Users/ndrx5/Desktop/NodeJS/NodeJS-ex/results`, () => {
+      return;
+    })
+  );
+}
+
+dir();
+
 const players = ["Tina", "Jorge", "Julien"];
 
 players.forEach((player) => {
   const getResults = async () => {
     try {
       const promise = await luckyDraw(player);
-      console.log(promise);
+      fs.writeFile(
+        `C:/Users/ndrx5/Desktop/NodeJS/NodeJS-ex/results/${player}.txt`,
+        `${player} won a prize in the draw!`,
+        () => {
+          return;
+        }
+      );
     } catch (err) {
-      console.log(err.message.toString());
+      fs.writeFile(
+        `C:/Users/ndrx5/Desktop/NodeJS/NodeJS-ex/results/${player}.txt`,
+        `${player} lost the draw.`,
+        () => {
+          return;
+        }
+      );
     }
   };
   getResults();
