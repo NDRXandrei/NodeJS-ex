@@ -12,14 +12,34 @@ function luckyDraw(player) {
   });
 }
 
+import * as fs from "node:fs";
+
 const players = ["Joe", "Caroline", "Sabrina"];
+
+luckyDraw().then(
+  fs.mkdir(`C:/Users/ndrx5/Desktop/NodeJS/NodeJS-ex/results`, () => {
+    return;
+  })
+);
 
 players.forEach((player) =>
   luckyDraw(player)
     .then((i) => {
-      console.log(i);
+      fs.writeFile(
+        `C:/Users/ndrx5/Desktop/NodeJS/NodeJS-ex/results/${player}.txt`,
+        `${i}`,
+        () => {
+          return;
+        }
+      );
     })
     .catch((err) => {
-      console.log(err.message.toString());
+      fs.writeFile(
+        `C:/Users/ndrx5/Desktop/NodeJS/NodeJS-ex/results/${player}.txt`,
+        `${err.message}`,
+        () => {
+          return;
+        }
+      );
     })
 );
