@@ -3,7 +3,7 @@ import "express-async-errors";
 
 const app = express();
 
-const message = "Server O";
+const message = "Server On";
 
 app.get("/", (request, response) => {
   response.send(message);
@@ -12,5 +12,5 @@ app.get("/", (request, response) => {
 const port = 3000;
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  console.log(`Server is running at http://localhost:${port}`);
 });
