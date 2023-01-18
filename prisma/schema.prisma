@@ -16,5 +16,6 @@ model     Planet {
   description     String?
   diameter        Int
   moons Int
-  createdAT       DateTime        @default(now())                
+  createdAT       DateTime        @default(now())   
+  updatedAT       DateTime        @default(now())             
 }
