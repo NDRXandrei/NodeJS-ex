@@ -16,46 +16,62 @@ const supertest_1 = __importDefault(require("supertest"));
 const app_1 = __importDefault(require("./app"));
 const client_mock_1 = require("./lib/prisma/client.mock");
 const request = (0, supertest_1.default)(app_1.default);
-test("GET /planets", () => __awaiter(void 0, void 0, void 0, function* () {
-    const planets = [
-        {
-            id: 1,
+describe("GET /planets", () => {
+    test("Valid request", () => __awaiter(void 0, void 0, void 0, function* () {
+        const planets = [
+            {
+                id: 1,
+                name: "Mars",
+                description: null,
+                diameter: 1000,
+                moons: 2,
+                createdAT: "2023-01-18T12:51:00.660Z",
+            },
+            {
+                id: 2,
+                name: "Saturn",
+                description: null,
+                diameter: 5000,
+                moons: 0,
+                createdAT: "2023-01-18T12:54:33.962Z",
+            },
+        ];
+        //@ts-ignore
+        client_mock_1.prismaMock.planet.findMany.mockResolvedValue(planets);
+        const response = yield request
+            .get("/planets")
+            .expect(200)
+            .expect("Content-Type", /application\/json/);
+        expect(response.body).toEqual(planets);
+    }));
+});
+describe("POST /planets", () => {
+    test("Valid request", () => __awaiter(void 0, void 0, void 0, function* () {
+        const planet = {
             name: "Mars",
             description: null,
             diameter: 1000,
             moons: 2,
-            createdAT: "2023-01-18T12:51:00.660Z",
-        },
-        {
-            id: 2,
-            name: "Saturn",
+        };
+        const response = yield request
+            .post("/planets")
+            .send(planet)
+            .expect(201)
+            .expect("Content-Type", /application\/json/);
+        expect(response.body).toEqual(planet);
+    }));
+    test("Invalid request", () => __awaiter(void 0, void 0, void 0, function* () {
+        const planet = {
             description: null,
-            diameter: 5000,
-            moons: 0,
-            createdAT: "2023-01-18T12:54:33.962Z",
-        },
-    ];
-    //@ts-ignore
-    client_mock_1.prismaMock.planet.findMany.mockResolvedValue(planets);
-    const response = yield request
-        .get("/planets")
-        .expect(200)
-        .expect("Content-Type", /application\/json/);
-    expect(response.body).toEqual(planets);
-}));
-test("POST /planets", () => __awaiter(void 0, void 0, void 0, function* () {
-    const planet = {
-        id: 1,
-        name: "Mars",
-        description: null,
-        diameter: 1000,
-        moons: 2,
-    };
-    const response = yield request
-        .post("/planets")
-        .send(planet)
-        .expect(201)
-        .expect("Content-Type", /application\/json/);
-    expect(response.body).toEqual(planet);
-}));
+            diameter: 1000,
+            moons: 2,
+        };
+        const response = yield request
+            .post("/planets")
+            .send(planet)
+            .expect(422)
+            .expect("Content-Type", /application\/json/);
+        expect(response.body).toEqual({ errors: { body: expect.any(Array) } });
+    }));
+});
 //# sourceMappingURL=server.test.js.map

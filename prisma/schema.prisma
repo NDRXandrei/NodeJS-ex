@@ -15,7 +15,7 @@ model     Planet {
   name            String          @db.VarChar(255)
   description     String?
   diameter        Int
-  moons Int
+  moons           Int
   createdAT       DateTime        @default(now())   
   updatedAT       DateTime        @default(now())             
 }
