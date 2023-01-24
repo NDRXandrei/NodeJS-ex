@@ -22,9 +22,48 @@ app.get("/planets", (request, response) => __awaiter(void 0, void 0, void 0, fun
     const planets = yield client_1.default.planet.findMany();
     response.json(planets);
 }));
+app.get("/planets/:id(\\d+)", (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const planetId = Number(request.params.id);
+    const planet = yield client_1.default.planet.findUnique({ where: { id: planetId } });
+    if (!planet) {
+        response.status(404);
+        return next(`Cannot get planet: ${planetId}`);
+    }
+    response.json(planet);
+}));
 app.post("/planets", (0, validation_1.validate)({ body: validation_1.planetSchema }), (request, response) => __awaiter(void 0, void 0, void 0, function* () {
-    const planet = request.body;
+    const planetData = request.body;
+    const planet = yield client_1.default.planet.create({ data: planetData });
     response.status(201).json(planet);
+}));
+app.put("/planets/:id(\\d+)", (0, validation_1.validate)({ body: validation_1.planetSchema }), (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const planetId = Number(request.params.id);
+    const planetData = request.body;
+    try {
+        const planet = yield client_1.default.planet.update({
+            where: { id: planetId },
+            data: planetData,
+        });
+        response.status(200).json(planet);
+    }
+    catch (error) {
+        response.status(404);
+        next(`Cannot put planet: ${planetId}`);
+    }
+}));
+app.delete("/planets/:id(\\d+)", (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const planetId = Number(request.params.id);
+    const planetData = request.body;
+    try {
+        yield client_1.default.planet.delete({
+            where: { id: planetId },
+        });
+        response.status(204).end();
+    }
+    catch (error) {
+        response.status(404);
+        next(`Cannot delete planet: ${planetId}`);
+    }
 }));
 app.use(validation_1.validationErrorMiddleware);
 exports.default = app;

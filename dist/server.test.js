@@ -53,6 +53,8 @@ describe("POST /planets", () => {
             diameter: 1000,
             moons: 2,
         };
+        //@ts-ignore
+        client_mock_1.prismaMock.planet.create.mockResolvedValue(planet);
         const response = yield request
             .post("/planets")
             .send(planet)
