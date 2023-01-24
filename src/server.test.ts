@@ -45,6 +45,9 @@ describe("POST /planets", () => {
       moons: 2,
     };
 
+    //@ts-ignore
+    prismaMock.planet.create.mockResolvedValue(planet);
+
     const response = await request
       .post("/planets")
       .send(planet)
@@ -70,4 +73,3 @@ describe("POST /planets", () => {
     expect(response.body).toEqual({ errors: { body: expect.any(Array) } });
   });
 });
-
