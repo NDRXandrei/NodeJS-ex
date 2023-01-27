@@ -1,4 +1,4 @@
-import { Router } from "express";
+import express from "express";
 import "express-async-errors";
 import prisma from "../lib/prisma/client";
 import {
@@ -11,12 +11,12 @@ import { initMulterMiddleware } from "../../middlewares/middleware/multer";
 
 const upload = initMulterMiddleware();
 
-const router = Router();
+const router = express.Router();
 
 router.get("/planets", async (request, response) => {
   const planets = await prisma.planet.findMany();
 
-  response.json({ planets });
+  response.json({ word: "ciao" });
 });
 
 router.post(
