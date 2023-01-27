@@ -16,7 +16,7 @@ const router = express.Router();
 router.get("/planets", async (request, response) => {
   const planets = await prisma.planet.findMany();
 
-  response.json({ word: "ciao" });
+  response.json({ planets });
 });
 
 router.post(

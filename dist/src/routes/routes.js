@@ -21,7 +21,7 @@ const upload = (0, multer_1.initMulterMiddleware)();
 const router = express_1.default.Router();
 router.get("/planets", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const planets = yield client_1.default.planet.findMany();
-    response.json({ word: "ciao" });
+    response.json({ planets });
 }));
 router.post("/planets", (0, validation_1.validate)({ body: validation_1.planetSchema }), (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const planetData = request.body;
