@@ -4,9 +4,11 @@ import cors from "cors";
 import { validationErrorMiddleware } from "../middlewares/middleware/validation";
 import { initSessionMiddleware } from "../middlewares/middleware/session";
 import { passport } from "../middlewares/middleware/passport";
+import authRoutes from "./routes/auth"
 
 const corsOptions = {
   origin: "http://localhost:8080",
+  credentials: true
 };
 
 const app = express();
@@ -15,6 +17,7 @@ app.use(cors(corsOptions));
 app.use(initSessionMiddleware());
 app.use(passport.initialize());
 app.use(passport.session());
+app.use("/auth", authRoutes)
 
 import router from "./routes/routes";
 

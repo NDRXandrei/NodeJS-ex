@@ -17,13 +17,14 @@ require("express-async-errors");
 const client_1 = __importDefault(require("../lib/prisma/client"));
 const validation_1 = require("../../middlewares/middleware/validation");
 const multer_1 = require("../../middlewares/middleware/multer");
+const passport_1 = require("../../middlewares/middleware/passport");
 const upload = (0, multer_1.initMulterMiddleware)();
 const router = express_1.default.Router();
 router.get("/planets", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const planets = yield client_1.default.planet.findMany();
     response.json({ planets });
 }));
-router.post("/planets", (0, validation_1.validate)({ body: validation_1.planetSchema }), (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/planets", passport_1.checkAuthorization, (0, validation_1.validate)({ body: validation_1.planetSchema }), (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const planetData = request.body;
     const planet = yield client_1.default.planet.create({ data: planetData });
     response.status(201).json(planet);
@@ -37,7 +38,7 @@ router.get("/planets/:id(\\d+)", (request, response, next) => __awaiter(void 0, 
     }
     response.json(planet);
 }));
-router.put("/planets/:id(\\d+)", (0, validation_1.validate)({ body: validation_1.planetSchema }), (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+router.put("/planets/:id(\\d+)", passport_1.checkAuthorization, (0, validation_1.validate)({ body: validation_1.planetSchema }), (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
     const planetId = Number(request.params.id);
     const planetData = request.body;
     try {
@@ -52,7 +53,7 @@ router.put("/planets/:id(\\d+)", (0, validation_1.validate)({ body: validation_1
         next(`Cannot put planet: ${planetId}`);
     }
 }));
-router.delete("/planets/:id(\\d+)", (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+router.delete("/planets/:id(\\d+)", passport_1.checkAuthorization, (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
     const planetId = Number(request.params.id);
     const planetData = request.body;
     try {
@@ -66,7 +67,7 @@ router.delete("/planets/:id(\\d+)", (request, response, next) => __awaiter(void 
         next(`Cannot delete planet: ${planetId}`);
     }
 }));
-router.post("/planets/:id(\\d+)/photo", upload.single("photo"), (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/planets/:id(\\d+)/photo", passport_1.checkAuthorization, upload.single("photo"), (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("request.file", request.file);
     if (!request.file) {
         response.status(400);

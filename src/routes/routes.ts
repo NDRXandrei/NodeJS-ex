@@ -8,6 +8,7 @@ import {
 } from "../../middlewares/middleware/validation";
 
 import { initMulterMiddleware } from "../../middlewares/middleware/multer";
+import { checkAuthorization } from "../../middlewares/middleware/passport";
 
 const upload = initMulterMiddleware();
 
@@ -21,6 +22,7 @@ router.get("/planets", async (request, response) => {
 
 router.post(
   "/planets",
+  checkAuthorization,
   validate({ body: planetSchema }),
   async (request, response) => {
     const planetData: PlanetData = request.body;
@@ -45,6 +47,7 @@ router.get("/planets/:id(\\d+)", async (request, response, next) => {
 
 router.put(
   "/planets/:id(\\d+)",
+  checkAuthorization,
   validate({ body: planetSchema }),
   async (request, response, next) => {
     const planetId = Number(request.params.id);
@@ -64,7 +67,7 @@ router.put(
   }
 );
 
-router.delete("/planets/:id(\\d+)", async (request, response, next) => {
+router.delete("/planets/:id(\\d+)", checkAuthorization, async (request, response, next) => {
   const planetId = Number(request.params.id);
   const planetData: PlanetData = request.body;
 
@@ -82,6 +85,7 @@ router.delete("/planets/:id(\\d+)", async (request, response, next) => {
 
 router.post(
   "/planets/:id(\\d+)/photo",
+  checkAuthorization,
   upload.single("photo"),
   async (request, response, next) => {
     console.log("request.file", request.file);
